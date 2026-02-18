@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>V4 Company — Monitoramento Google Ads</title>
+  <meta name="description" content="Dashboard de monitoramento de otimizações Google Ads — V4 Company" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/main.css" />
+
+  <!-- Favicon inline SVG -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230a0a0a'/><text x='4' y='24' font-size='22' font-family='Arial' font-weight='900'><tspan fill='%234285F4'>G</tspan></text></svg>" />
+</head>
+<body>
+
+<div class="app-wrapper">
+
+  <!-- ═══════════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════════ -->
+  <header class="app-header">
+    <div class="header-brand">
+      <div class="brand-logo">
+        <span class="v4">V4</span>
+        <span class="company">COMPANY</span>
+      </div>
+      <div class="header-divider"></div>
+      <span class="header-title">Monitoramento de Otimização &mdash; Google Ads</span>
+    </div>
+
+    <div class="header-meta">
+      <div class="header-update">
+        <div class="update-dot"></div>
+        <span>ATUALIZAÇÃO</span>
+        <span id="update-time">--/--/---- --:--</span>
+      </div>
+      <button class="btn-refresh" id="refresh-btn" title="Atualizar dados">
+        <!-- Refresh icon -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 4 23 10 17 10"/>
+          <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
+        </svg>
+        Atualizar
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN GRID
+  ═══════════════════════════════════════════ -->
+  <main class="app-main">
+
+    <!-- ──────────────────────────────────────────
+         COLUNA 1 — Performance do Time
+    ────────────────────────────────────────── -->
+    <aside class="panel panel-left">
+      <div class="panel-header">
+        <span class="panel-title">Performance do Time</span>
+        <!-- Google G colorido -->
+        <div class="g-logo" title="Google Ads">
+          <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
+        </div>
+      </div>
+
+      <!-- Tabela de gestores: rank + ciclo médio -->
+      <div class="panel-body" id="managers-body">
+        <div class="state-loading">
+          <div class="loading-spinner"></div>
+        </div>
+      </div>
+
+      <!-- Legenda -->
+      <div class="panel-legend">
+        <div class="legend-item">
+          <span class="legend-dot ok"></span>
+          <span>≤ 2d (Excelente)</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot warning"></span>
+          <span>3-7d (Atenção)</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot critical"></span>
+          <span>&gt; 7d (Crítico)</span>
+        </div>
+      </div>
+
+      <!-- QR / link para relatório -->
+      <div class="panel-qr">
+        <div class="qr-placeholder">
+          <span>QR CODE<br/>RELATÓRIO</span>
+        </div>
+        <div class="qr-label">Ver Detalhes</div>
+        <div class="qr-sublabel">Escaneie para relatório completo</div>
+      </div>
+    </aside>
+
+    <!-- ──────────────────────────────────────────
+         COLUNA 2 — Otimizações em Dia (≤ 2 dias)
+    ────────────────────────────────────────── -->
+    <section class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Otimizações em Dia (&le; 2 dias)</span>
+        <span class="panel-count ok" id="ok-count">—</span>
+      </div>
+      <div class="panel-body" id="ok-body">
+        <div class="state-loading">
+          <div class="loading-spinner"></div>
+          <span>Carregando...</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────────────
+         COLUNA 3 — Requer Atenção (3-7 dias)
+    ────────────────────────────────────────── -->
+    <section class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Requer Atenção (3-7 dias)</span>
+        <span class="panel-count warning" id="warning-count">—</span>
+      </div>
+      <div class="panel-body" id="warning-body">
+        <div class="state-loading">
+          <div class="loading-spinner"></div>
+          <span>Carregando...</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────────────
+         COLUNA 4 — Risco Crítico (> 7 dias)
+    ────────────────────────────────────────── -->
+    <section class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Risco Crítico (&gt; 7 dias)</span>
+        <span class="panel-count critical" id="critical-count">—</span>
+      </div>
+      <div class="panel-body" id="critical-body">
+        <div class="state-loading">
+          <div class="loading-spinner"></div>
+          <span>Carregando...</span>
+        </div>
+      </div>
+      <!-- Ação necessária badge -->
+      <div class="panel-action-footer">
+        <div class="action-badge">
+          <!-- Warning icon -->
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          Ação Necessária
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════ -->
+  <footer class="app-footer">
+    <div class="footer-legend">
+      <span class="footer-dot ok"></span>
+      <span id="footer-ok">≤ 2d (—)</span>
+    </div>
+    <div class="footer-legend">
+      <span class="footer-dot warning"></span>
+      <span id="footer-warning">3-7d (—)</span>
+    </div>
+    <div class="footer-legend">
+      <span class="footer-dot critical"></span>
+      <span id="footer-critical">8-15d (—)</span>
+    </div>
+    <div class="footer-legend">
+      <span class="footer-dot inactive"></span>
+      <span id="footer-inactive">> 15d (—)</span>
+    </div>
+  </footer>
+
+</div>
+
+<!-- JS — ES Modules -->
+<script type="module" src="assets/js/app.js"></script>
+
+</body>
+</html>
